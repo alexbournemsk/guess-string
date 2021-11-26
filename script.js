@@ -1,18 +1,31 @@
-const playButton = document.querySelector('#button1');
+const startButton = document.querySelector('#start-button');
 const myAudio = document.querySelector('#my-audio');
 const answerBlock = document.querySelector('#answer');
 const scoreBlock = document.querySelector('.score-block');
 const scoreCount = scoreBlock.querySelector('span');
+const progress = document.querySelector('.progress');
+const questionNumber = progress.querySelector('span');
 
-//генерация вопроса
-//воспроизвести случайную ноту https://akkordam.ru/nastrojka/zvuki-strun-dlya-nastrojki-gitary
+//*Генерация следующего вопроса после клика на кнопку ответа
+//*Отображать номер вопроса
+
+//Отображение правильный ответ или нет
+//Повтор звука после нажатия кнопки Play
+//Заменить play на start. кнопка исчезает после начала игры
+
+
+
+// https://akkordam.ru/nastrojka/zvuki-strun-dlya-nastrojki-gitary
 
 //DATA
 
 //поиск по массиву объектов 
 // teacherId = teachers.find(item => item.eName == teacherEnglishNameGet).id;
  
+progress.style.display = "none"
+
 let currentScore = 0;
+let questionNumberCount = 0;
 
 const updateScore = () => {
   scoreCount.innerHTML = currentScore;
@@ -35,13 +48,15 @@ const notes = [
 let correctAnswer = 100;
 let answer = 0;
 
-const onPlayHandler = () => {
+const generateQuestion = () => {
+  questionNumberCount++;
   answerBlock.innerHTML = '';
+  progress.style.display = ""; //показываем блок очков и вопроса
+  questionNumber.textContent = questionNumberCount;
   const randomNote = _.random (0,notes.length-1);
-  console.log(randomNote);
   myAudio.src = notes[randomNote].sound;
   myAudio.play();
-  generateQuestion(2);
+  addButtons(2);
   correctAnswer = notes[randomNote].name;
 }
 
@@ -52,25 +67,26 @@ const createButton = (buttonNumber) => {
   answerBlock.appendChild(button);
 }
 
-const generateQuestion = (numberOfQuestions) => {
+const addButtons = (numberOfQuestions) => {
   for (let i = 1; i <= numberOfQuestions; i++) {
     createButton(i);    
   }
 }
 
-const playSound = () => {
-  playButton.addEventListener('click', onPlayHandler)
+const startGame = () => {
+  startButton.addEventListener('click', generateQuestion)
 }
 
 const answerButtonHandler = (evt) => {
   answer = evt.target.textContent;
   console.log(`Нажали ${answer}, правильный ответ ${correctAnswer}`)
   if (answer == correctAnswer){
-  currentScore = currentScore + 1;
+  currentScore++;
   updateScore();
-  };
+  generateQuestion();
+  } else {generateQuestion()}
 }
 
-playSound();
+startGame();
 
 
