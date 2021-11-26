@@ -4,9 +4,15 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/lodash/4.10.0/lodash.js"></script>
   <title>Document</title>
 </head>
 <body> 
+
+  <div class="score-block">
+    Очки: <span></span>
+  </div>
+
   <div class = 'play-button'>
     <button id="button1">Play</button>
     <audio id =  'my-audio' src="./1str.mp3"></audio>
@@ -16,6 +22,6 @@
   <div id="answer"></div>
 
   
-<script src = "script.js"> </script>
+<script src = "script.js" type="module"> </script>
 </body>
 </html>
