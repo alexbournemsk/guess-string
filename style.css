@@ -1,0 +1,17 @@
+button.answer-correct {
+  color: green;
+
+}
+
+button.answer-incorrect {
+  color: red;
+
+}
+p.answer-correct {
+  color: green;
+}
+
+
+p.answer-incorrect {
+  color: red;
+}

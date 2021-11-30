@@ -8,10 +8,12 @@ const questionNumber = progress.querySelector('span');
 
 //*Генерация следующего вопроса после клика на кнопку ответа
 //*Отображать номер вопроса
+//*Отображение правильный ответ или нет
 
-//Отображение правильный ответ или нет
-//Повтор звука после нажатия кнопки Play
 //Заменить play на start. кнопка исчезает после начала игры
+//Повтор звука после нажатия кнопки Play
+//Очки до старта не отображать
+//Защита от тротлинга
 
 
 
@@ -56,7 +58,7 @@ const generateQuestion = () => {
   const randomNote = _.random (0,notes.length-1);
   myAudio.src = notes[randomNote].sound;
   myAudio.play();
-  addButtons(2);
+  setTimeout(()=>{addButtons(2)},1000);
   correctAnswer = notes[randomNote].name;
 }
 
@@ -77,14 +79,32 @@ const startGame = () => {
   startButton.addEventListener('click', generateQuestion)
 }
 
+const showMessageCorrect = (evt) => {
+  const button = evt.target
+  let message = document.createElement('p');
+  button.classList.add('answer-correct');
+  message.classList.add('answer-correct');
+  message.textContent = 'Правильно!';
+  answerBlock.appendChild(message);
+}
+
+const showMessageIncorrect = () => {
+  let message = document.createElement('p');
+  message.classList.add('answer-incorrect');
+  message.textContent = 'Не правильно!';
+  answerBlock.appendChild(message);
+}
+
 const answerButtonHandler = (evt) => {
   answer = evt.target.textContent;
-  console.log(`Нажали ${answer}, правильный ответ ${correctAnswer}`)
   if (answer == correctAnswer){
   currentScore++;
   updateScore();
-  generateQuestion();
-  } else {generateQuestion()}
+  showMessageCorrect(evt);
+  setTimeout(generateQuestion,700);
+  } else {
+    showMessageIncorrect(evt);
+    setTimeout(generateQuestion,700)}
 }
 
 startGame();
