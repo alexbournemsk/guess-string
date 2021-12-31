@@ -1,3 +1,42 @@
+* {
+font-family: Roboto;
+font-style: normal;
+font-weight: 500;
+font-size: 24px;
+line-height: 28px;
+color: #FFFFFF;
+margin: auto;
+}
+
+.container {
+  border-radius: 15px;
+  margin: 0 auto;
+  padding-top: 30px;;
+  width: 414px;
+  height: 100vh; 
+  background: linear-gradient(162.44deg, #3391F3 0%, rgba(82, 116, 237, 0.890625) 99.99%, rgba(51, 145, 243, 0) 100%);;
+}
+
+.score-block {
+  padding: 20px;
+}
+
+.progress {
+  padding: 20px;
+
+}
+
+button {
+  display :block;
+  margin: 0 auto 20px;
+  background: linear-gradient(180deg, #C4FE20 0%, rgba(183, 236, 33, 0.980469) 31.25%, rgba(154, 196, 34, 0.9375) 100%);
+  border-radius: 15px;
+  width: 323.84px;
+  height: 65px;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  border-style: none;
+}
+
 button.answer-correct {
   color: green;
 
@@ -14,4 +53,24 @@ p.answer-correct {
 
 p.answer-incorrect {
   color: red;
+}
+
+.play-button {
+  width:100px;
+  height: 100px;
+}
+
+.play-button {
+  transition: 1s;
+  fill: #ffffff;
+  opacity: .5;
+}
+
+.play-button:hover {
+  fill: #ffffff;
+  opacity: 1;
+}
+
+.end-game-message {
+  padding: 20px;
 }
