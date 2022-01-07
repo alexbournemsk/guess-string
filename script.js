@@ -7,10 +7,10 @@ const myAudio = document.querySelector('#my-audio');
 const answerBlock = document.querySelector('#answer');
 const scoreBlock = document.querySelector('.score-block');
 const scoreCount = scoreBlock.querySelector('span');
-const progress = document.querySelector('.progress');
-const questionNumber = progress.querySelector('span');
+const progressBar = document.querySelector('#progress_bar');
+const questionNumber = progressBar.value;
 
-const NUMBER_OF_QUESTIONS = 1;
+const NUMBER_OF_QUESTIONS = 9;
 const STRING_NAMES = ['0', 'Первая', 'Вторая']
 
 //*Генерация следующего вопроса после клика на кнопку ответа
@@ -25,6 +25,13 @@ const STRING_NAMES = ['0', 'Первая', 'Вторая']
 //*Заменить play на start. кнопка исчезает после начала игры
 //*Повтор звука после нажатия кнопки Play
 
+//*рефакторинг
+//*перекраска кнопок
+//*блок кнопок флексом
+
+//*грид-сетка
+//*дизайн блока уровня и очков
+
 //Защита от тротлинга
 
 
@@ -36,15 +43,18 @@ const STRING_NAMES = ['0', 'Первая', 'Вторая']
 //поиск по массиву объектов 
 // teacherId = teachers.find(item => item.eName == teacherEnglishNameGet).id;
 
+const hide = (...elements) => {
+  elements.forEach((element) => element.style.display = 'none');    
+}
 
+const show = (...elements) => {
+  elements.forEach((element) => element.style.display = '');    
+}
 
-progress.style.display = 'none'; //номер вопроса
-scoreBlock.style.display = 'none'; //количество очков
-playSoundButton.style.display = 'none'; //кнопка повтора звука
+hide (progressBar,scoreBlock,playSoundButton) //прячем номер вопроса, очки, кнопку повтора звука
 
 let currentScore = 0;
 let questionNumberCount = 0;
-
 
 const updateScore = () => {
   scoreCount.innerHTML = currentScore;
@@ -72,14 +82,11 @@ const generateQuestion = () => {
     endGame();
   } else {
     updateScore();
-    answerBlock.style.display = '';
-    playSoundButton.style.display = '';
-    startButton.style.display = 'none';
-    questionNumberCount++;
-    answerBlock.innerHTML = '';
-    progress.style.display = ""; //показываем блок очков и вопроса
-    scoreBlock.style.display = "";
-    questionNumber.textContent = questionNumberCount;
+    answerBlock.innerHTML = ''; //убираем предыдущие кнопки ответа
+    hide(startButton); //прячем кнопку "начать игру"
+    show(progressBar,scoreBlock,answerBlock,playSoundButton) //показываем номер вопроса, кнопка повтора звука
+    questionNumberCount++;     
+    progressBar.value = questionNumberCount;
     const randomNote = _.random(0, notes.length - 1);
     myAudio.src = notes[randomNote].sound;
     myAudio.play();
@@ -137,19 +144,13 @@ const endGame = () => {
 }
 
 const showMessageCorrect = (evt) => {
-  const button = evt.target
-  let message = document.createElement('p');
+  const button = evt.target;
   button.classList.add('answer-correct');
-  message.classList.add('answer-correct');
-  message.textContent = 'Правильно!';
-  answerBlock.appendChild(message);
 }
 
-const showMessageIncorrect = () => {
-  let message = document.createElement('p');
-  message.classList.add('answer-incorrect');
-  message.textContent = 'Не правильно!';
-  answerBlock.appendChild(message);
+const showMessageIncorrect = (evt) => {
+  const button = evt.target;
+  button.classList.add('answer-incorrect');
 }
 
 const answerButtonHandler = (evt) => {
