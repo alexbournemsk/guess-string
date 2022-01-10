@@ -8,22 +8,11 @@ const answerBlock = document.querySelector('#answer');
 const scoreBlock = document.querySelector('.score-block');
 const scoreCount = scoreBlock.querySelector('span');
 const progressBar = document.querySelector('#progress_bar');
+const levelInfo = document.querySelector('.level-info');
 const questionNumber = progressBar.value;
 
-const NUMBER_OF_QUESTIONS = 9;
+const NUMBER_OF_QUESTIONS = 1;
 const STRING_NAMES = ['0', 'Первая', 'Вторая']
-
-//*Генерация следующего вопроса после клика на кнопку ответа
-//*Отображать номер вопроса
-//*Отображение правильный ответ или нет
-
-//*Очки до старта не отображать
-//*Конец игры
-
-
-//*Рестарт игры
-//*Заменить play на start. кнопка исчезает после начала игры
-//*Повтор звука после нажатия кнопки Play
 
 //*рефакторинг
 //*перекраска кнопок
@@ -31,6 +20,17 @@ const STRING_NAMES = ['0', 'Первая', 'Вторая']
 
 //*грид-сетка
 //*дизайн блока уровня и очков
+//отдельные блоки для состояний игры:
+  // начало
+  // игра
+  // конец
+  // (туториал)
+  // (выбор уровня)
+
+
+// туториал
+// выбор уровня
+
 
 //Защита от тротлинга
 
@@ -51,7 +51,7 @@ const show = (...elements) => {
   elements.forEach((element) => element.style.display = '');    
 }
 
-hide (progressBar,scoreBlock,playSoundButton) //прячем номер вопроса, очки, кнопку повтора звука
+hide (levelInfo, progressBar,scoreBlock,playSoundButton) //прячем номер вопроса, очки, кнопку повтора звука
 
 let currentScore = 0;
 let questionNumberCount = 0;
@@ -84,7 +84,7 @@ const generateQuestion = () => {
     updateScore();
     answerBlock.innerHTML = ''; //убираем предыдущие кнопки ответа
     hide(startButton); //прячем кнопку "начать игру"
-    show(progressBar,scoreBlock,answerBlock,playSoundButton) //показываем номер вопроса, кнопка повтора звука
+    show(levelInfo,progressBar,scoreBlock,answerBlock,playSoundButton) //показываем номер вопроса, кнопка повтора звука
     questionNumberCount++;     
     progressBar.value = questionNumberCount;
     const randomNote = _.random(0, notes.length - 1);
@@ -127,11 +127,8 @@ const playSound = () => {
 playSoundButton.addEventListener('click', playSound)
 
 const endGame = () => {
-  answerBlock.style.display = 'none';
-  scoreBlock.style.display = 'none';
-  progress.style.display = 'none';
-  playSoundButton.style.display = 'none';
-  startButton.style.display = '';
+  hide(levelInfo,answerBlock,scoreBlock,progressBar,playSoundButton);
+  show(startButton);
   startButton.textContent = 'Играть еще';
   insertElement(mainContainer, endGameMessageElement(currentScore),'beforeend');
   currentScore = 0;
